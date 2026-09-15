@@ -1,0 +1,308 @@
+mqtt:
+  enabled: true
+  host: 192.168.68.203
+  user: andrew
+  password: AnhYeuEm8352998
+
+detect:
+  enabled: true
+
+notifications:
+  enabled: true
+  email: andrew.nv@gmail.com
+
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 4
+
+semantic_search:
+  enabled: true
+  model_size: small
+
+face_recognition:
+  enabled: true
+  model_size: small
+
+lpr:
+  enabled: false
+
+classification:
+  bird:
+    enabled: false
+
+review:
+  alerts:
+    enabled: true
+    labels:
+      - person   
+
+record:
+  enabled: true
+  continuous:
+    days: 0
+  motion:
+    days: 0
+  export:
+    timelapse_args: "-vf setpts=0.04*PTS -r 30"
+  preview:
+    quality: medium
+  alerts:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      days: 30
+      mode: motion
+  detections:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      days: 30
+      mode: motion     
+
+snapshots:
+  enabled: true
+  clean_copy: true
+  timestamp: false
+  bounding_box: true
+  crop: false
+  height: 175
+  # Optional: Camera override for retention settings (default: global values)
+  retain:
+    default: 30
+    objects:
+      person: 30
+  quality: 100
+
+cameras:
+  driveway_left:
+    enabled: true
+    friendly_name: Driveway Left
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/driveway_left
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+            - audio
+    snapshots:
+      enabled: true
+    record:
+      enabled: true
+      motion:
+        days: 1
+      alerts:
+        retain:
+          days: 30
+          mode: motion
+      detections:
+        retain:
+          days: 30
+          mode: motion  
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: driveway_left
+    zones:
+      driveway_left_zone:
+        coordinates: 
+          0.577,0.17,0.386,0.318,0.368,0,0,0.459,0.096,0.818,0.069,0.864,0.106,0.996,0.947,1,1,0.572
+        inertia: 5
+        loitering_time: 2
+        friendly_name: Driveway Left Zone
+        objects: person
+    review:
+      alerts:
+        required_zones: driveway_left_zone
+      detections:
+        required_zones: driveway_left_zone
+    objects: {}
+    motion: {}
+  driveway_right:
+    enabled: true
+    friendly_name: Driveway Right
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/driveway_right
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+            - audio
+    snapshots:
+      enabled: true
+    record:
+      enabled: true
+      motion:
+        days: 1
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: driveway_right
+    zones:
+      driveway_right_zone:
+        coordinates: 
+          0.886,0,0.642,0,0,0.123,0,0.374,0,0.391,0,1,0.995,0.998,1,0.155
+        inertia: 5
+        loitering_time: 3
+        objects: person
+        friendly_name: Driveway Right Zone
+    review:
+      alerts:
+        required_zones: driveway_right_zone
+      detections:
+        required_zones: driveway_right_zone
+    objects:
+      filters:
+        person:
+          mask: 0.114,0,0.191,0.297,0.669,0.071,0.666,0.003
+  garage:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/garage
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - audio
+            - record
+    record:
+      enabled: true
+      motion:
+        days: 1
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: garage
+  living_room:
+    enabled: true
+    friendly_name: Living Room
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/living_room
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+            - audio
+    record:
+      enabled: true
+      motion:
+        days: 0
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: living_room
+  front_door:
+    enabled: true
+    friendly_name: Front Door
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/front_door
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+            - audio
+    snapshots:
+      enabled: true
+    record:
+      enabled: true
+      motion:
+        days: 1
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: front_door
+    zones:
+      front_door_zone:
+        coordinates: 
+          0.165,0,0.6,0.012,0.556,0.298,0.847,0.452,0.789,1,-0.001,0.996,0,0.099,0.085,0.264,0.158,0.31,0.21,0.153
+        inertia: 5
+        loitering_time: 3
+        objects: person
+        friendly_name: Front Door Zone
+    review:
+      alerts:
+        required_zones: front_door_zone
+      detections:
+        required_zones: front_door_zone
+  tv_room:
+    enabled: true
+    friendly_name: TV Room
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/tv_room
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+    snapshots:
+      enabled: false
+    record:
+      enabled: false
+      motion:
+        days: 0
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    detect:
+      width: 1280
+      height: 720
+    live:
+      streams:
+        Stream 1: tv_room
+    zones: {}
+version: 0.17-0
+go2rtc:
+  streams:
+    front_door:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.104:554/stream1
+    driveway_left:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.102:554/stream1
+    driveway_right:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.103:554/stream1
+    garage:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.106:554/stream1
+    living_room:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.110:554/stream1
+    tv_room:
+      - rtsp://andrew:AnhYeuEm8352998@192.168.68.203:8554/649a63d7dfbc_live
+
